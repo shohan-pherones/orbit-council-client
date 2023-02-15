@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useProjectsContext } from "../hooks/useProjectsContext";
 
 const ProjectFrom = () => {
   const [title, setTitle] = useState("");
@@ -8,6 +9,8 @@ const ProjectFrom = () => {
   const [manager, setManager] = useState("");
   const [dev, setDev] = useState("");
   const [error, setError] = useState(null);
+
+  const { dispatch } = useProjectsContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +38,9 @@ const ProjectFrom = () => {
       setManager("");
       setDev("");
       setError(null);
-      console.log("New project added");
+
+      console.log("New project added", json);
+      dispatch({ type: "CREATE_PROJECT", payload: json });
     }
   };
 

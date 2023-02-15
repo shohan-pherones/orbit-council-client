@@ -1,9 +1,23 @@
-import { useFetch } from "../hooks/useFetch";
+import { useEffect } from "react";
 import ProjectDetails from "../components/ProjectDetails";
 import ProjectForm from "../components/ProjectFrom";
+import { useProjectsContext } from "../hooks/useProjectsContext";
 
 const Home = () => {
-  const { data: projects } = useFetch("http://localhost:4000/api/projects");
+  const { projects, dispatch } = useProjectsContext();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const res = await fetch("http://localhost:4000/api/projects");
+      const json = await res.json();
+
+      if (res.ok) {
+        dispatch({ type: "SET_PROJECTS", payload: json.projects });
+      }
+    };
+
+    fetchProjects();
+  }, [dispatch]);
 
   return (
     <div className="home container mx-auto py-20 grid grid-cols-3 gap-10">
