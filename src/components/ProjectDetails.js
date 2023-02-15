@@ -1,6 +1,23 @@
 import { currencyFormatter } from "../utils/currencyFormatter";
+import { useProjectsContext } from "../hooks/useProjectsContext";
 
 const ProjectDetails = ({ project }) => {
+  const { dispatch } = useProjectsContext();
+
+  const handleDelete = async () => {
+    const res = await fetch(
+      `http://localhost:4000/api/projects/${project._id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    const json = await res.json();
+
+    if (res.ok) {
+      dispatch({ type: "DELETE_PROJECT", payload: json });
+    }
+  };
+
   return (
     <div className="project bg-slate-800 p-5 rounded-xl shadow-xl border border-slate-700 flex flex-col gap-5 w-[30rem] hover:bg-slate-900 duration-300">
       <div className="project-top">
@@ -35,7 +52,10 @@ const ProjectDetails = ({ project }) => {
         <button className="bg-sky-400 py-2 px-5 rounded shadow-xl text-slate-900 hover:bg-sky-50 duration-300">
           Update
         </button>
-        <button className="text-rose-500 hover:underline underline-offset-2">
+        <button
+          onClick={handleDelete}
+          className="text-rose-500 hover:underline underline-offset-2"
+        >
           Delete
         </button>
       </div>
