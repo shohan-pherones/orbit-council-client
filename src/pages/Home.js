@@ -12,7 +12,7 @@ const Home = () => {
       const json = await res.json();
 
       if (res.ok) {
-        dispatch({ type: "SET_PROJECTS", payload: json.projects });
+        dispatch({ type: "SET_PROJECTS", payload: json });
       }
     };
 
