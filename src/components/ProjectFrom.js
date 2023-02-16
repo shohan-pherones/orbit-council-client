@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useProjectsContext } from "../hooks/useProjectsContext";
 
-const ProjectFrom = () => {
-  const [title, setTitle] = useState("");
-  const [tech, setTech] = useState("");
-  const [budget, setBudget] = useState("");
-  const [duration, setDuration] = useState("");
-  const [manager, setManager] = useState("");
-  const [dev, setDev] = useState("");
+const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
+  const [title, setTitle] = useState(project ? project.title : "");
+  const [tech, setTech] = useState(project ? project.tech : "");
+  const [budget, setBudget] = useState(project ? project.budget : "");
+  const [duration, setDuration] = useState(project ? project.duration : "");
+  const [manager, setManager] = useState(project ? project.manager : "");
+  const [dev, setDev] = useState(project ? project.dev : "");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
@@ -16,38 +16,87 @@ const ProjectFrom = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const project = { title, tech, budget, duration, manager, dev };
+    // creating project object
+    const projectObj = { title, tech, budget, duration, manager, dev };
 
-    const res = await fetch("http://localhost:4000/api/projects", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(project),
-    });
-    const json = await res.json();
+    // console.log(projectObj);
 
-    if (!res.ok) {
-      setError(json.error);
-      setEmptyFields(json.emptyFields);
+    if (!project) {
+      // sending post request
+      const res = await fetch("http://localhost:4000/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(projectObj),
+      });
+      const json = await res.json();
+
+      // if response is false
+      if (!res.ok) {
+        setError(json.error);
+        setEmptyFields(json.emptyFields);
+      }
+
+      // if response is true
+      if (res.ok) {
+        setTitle("");
+        setTech("");
+        setBudget("");
+        setDuration("");
+        setManager("");
+        setDev("");
+        setError(null);
+        setEmptyFields([]);
+        dispatch({ type: "CREATE_PROJECT", payload: json });
+      }
+
+      return null;
     }
 
-    if (res.ok) {
-      setTitle("");
-      setTech("");
-      setBudget("");
-      setDuration("");
-      setManager("");
-      setDev("");
-      setError(null);
-      setEmptyFields([]);
-      dispatch({ type: "CREATE_PROJECT", payload: json });
+    if (project) {
+      // console.log(projectObj);
+      // sending patch request
+      const res = await fetch(
+        `http://localhost:4000/api/projects/${project._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(projectObj),
+        }
+      );
+      const json = await res.json();
+      console.log(json);
+
+      // if response is false
+      if (!res.ok) {
+        setError(json.error);
+        setEmptyFields(json.emptyFields);
+      }
+
+      // if response is true
+      if (res.ok) {
+        setError(null);
+        setEmptyFields([]);
+        // console.log(json);
+        dispatch({ type: "UPDATE_PROJECT", payload: json });
+        setIsModalOpen(false);
+        setIsOverlayOpen(false);
+      }
     }
+
+    return null;
   };
 
   return (
     <form className="project-form flex flex-col gap-5" onSubmit={handleSubmit}>
-      <h2 className="section-title text-4xl text-sky-400 font-semibold mb-5">
+      <h2
+        className={`section-title text-4xl text-sky-400 font-semibold mb-5 ${
+          project ? "hidden" : ""
+        }`}
+      >
         Add a New Project
       </h2>
 
@@ -179,7 +228,7 @@ const ProjectFrom = () => {
         type="submit"
         className="bg-sky-400 text-slate-900 py-3 rounded-lg hover:bg-sky-50 duration-300"
       >
-        Add Project
+        {project ? "Confirm Update" : "Add Project"}
       </button>
       {error && (
         <p className="error bg-rose-500/10 p-5 rounded-lg border border-rose-500 text-rose-500">

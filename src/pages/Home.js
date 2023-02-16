@@ -23,7 +23,7 @@ const Home = () => {
     <div className="home container mx-auto py-20 grid grid-cols-3 gap-10">
       <div className="col-span-2">
         <h2 className="section-title text-4xl text-sky-400 font-semibold mb-10">
-          All Projects
+          {projects.length < 1 ? "No Projects" : "All Projects"}
         </h2>
         <div className="projects flex gap-10 flex-wrap">
           {projects &&
