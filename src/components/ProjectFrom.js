@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useProjectsContext } from "../hooks/useProjectsContext";
 
 const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
@@ -8,6 +8,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
   const [duration, setDuration] = useState(project ? project.duration : "");
   const [manager, setManager] = useState(project ? project.manager : "");
   const [dev, setDev] = useState(project ? project.dev : "");
+
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
@@ -16,29 +17,25 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // creating project object
     const projectObj = { title, tech, budget, duration, manager, dev };
 
-    // console.log(projectObj);
-
+    // if there is no project, sending post request
     if (!project) {
-      // sending post request
-      const res = await fetch("http://localhost:4000/api/projects", {
+      const res = await fetch(process.env.REACT_APP_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(projectObj),
       });
+
       const json = await res.json();
 
-      // if response is false
       if (!res.ok) {
         setError(json.error);
         setEmptyFields(json.emptyFields);
       }
 
-      // if response is true
       if (res.ok) {
         setTitle("");
         setTech("");
@@ -46,19 +43,20 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
         setDuration("");
         setManager("");
         setDev("");
+
         setError(null);
         setEmptyFields([]);
+
         dispatch({ type: "CREATE_PROJECT", payload: json });
       }
 
       return null;
     }
 
+    // if there is a project, sending patch request
     if (project) {
-      // console.log(projectObj);
-      // sending patch request
       const res = await fetch(
-        `http://localhost:4000/api/projects/${project._id}`,
+        `${process.env.REACT_APP_API_URL}${project._id}`,
         {
           method: "PATCH",
           headers: {
@@ -67,21 +65,21 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           body: JSON.stringify(projectObj),
         }
       );
-      const json = await res.json();
-      console.log(json);
 
-      // if response is false
+      const json = await res.json();
+
       if (!res.ok) {
         setError(json.error);
         setEmptyFields(json.emptyFields);
       }
 
-      // if response is true
       if (res.ok) {
         setError(null);
         setEmptyFields([]);
-        // console.log(json);
+
         dispatch({ type: "UPDATE_PROJECT", payload: json });
+
+        // closing the modal and ovelay
         setIsModalOpen(false);
         setIsOverlayOpen(false);
       }
@@ -105,11 +103,11 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           htmlFor="title"
           className="cursor-pointer hover:text-sky-400 duration-300"
         >
-          Project Title
+          Title
         </label>
         <input
           type="text"
-          placeholder="e.g. e-commerce store"
+          placeholder="New Jackson Fashion Club"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           id="title"
@@ -130,7 +128,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
         </label>
         <input
           type="text"
-          placeholder="e.g. node, express, react"
+          placeholder="MongoDB, Express.js, React.js, Node.js"
           value={tech}
           onChange={(e) => setTech(e.target.value)}
           id="tech"
@@ -147,11 +145,11 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           htmlFor="budget"
           className="cursor-pointer hover:text-sky-400 duration-300"
         >
-          Budget (in USD)
+          Budget (USD)
         </label>
         <input
           type="number"
-          placeholder="e.g. 1000"
+          placeholder="100"
           value={budget}
           onChange={(e) => setBudget(e.target.value)}
           id="budget"
@@ -168,11 +166,11 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           htmlFor="duration"
           className="cursor-pointer hover:text-sky-400 duration-300"
         >
-          Duration (in weeks)
+          Duration (Week)
         </label>
         <input
           type="number"
-          placeholder="e.g. 4"
+          placeholder="4"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
           id="duration"
@@ -193,7 +191,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
         </label>
         <input
           type="text"
-          placeholder="e.g. Sarah"
+          placeholder="Natasha Parker"
           value={manager}
           onChange={(e) => setManager(e.target.value)}
           id="manager"
@@ -210,11 +208,11 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           htmlFor="dev"
           className="cursor-pointer hover:text-sky-400 duration-300"
         >
-          Total Developers
+          Developer
         </label>
         <input
           type="number"
-          placeholder="e.g. 5"
+          placeholder="5"
           value={dev}
           onChange={(e) => setDev(e.target.value)}
           id="dev"
@@ -230,6 +228,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
       >
         {project ? "Confirm Update" : "Add Project"}
       </button>
+
       {error && (
         <p className="error bg-rose-500/10 p-5 rounded-lg border border-rose-500 text-rose-500">
           {error}
@@ -239,4 +238,4 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
   );
 };
 
-export default ProjectFrom;
+export default React.memo(ProjectFrom);

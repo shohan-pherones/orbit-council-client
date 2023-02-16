@@ -1,14 +1,15 @@
 import { useEffect } from "react";
+import { useProjectsContext } from "../hooks/useProjectsContext";
 import ProjectDetails from "../components/ProjectDetails";
 import ProjectForm from "../components/ProjectFrom";
-import { useProjectsContext } from "../hooks/useProjectsContext";
 
 const Home = () => {
   const { projects, dispatch } = useProjectsContext();
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const res = await fetch("http://localhost:4000/api/projects");
+      const res = await fetch(process.env.REACT_APP_API_URL);
+
       const json = await res.json();
 
       if (res.ok) {
@@ -25,6 +26,7 @@ const Home = () => {
         <h2 className="section-title text-4xl text-sky-400 font-semibold mb-10">
           {projects.length < 1 ? "No Projects" : "All Projects"}
         </h2>
+
         <div className="projects flex gap-10 flex-wrap">
           {projects &&
             projects.map((project) => (
@@ -32,6 +34,7 @@ const Home = () => {
             ))}
         </div>
       </div>
+
       <ProjectForm />
     </div>
   );

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { currencyFormatter } from "../utils/currencyFormatter";
+import React, { useState } from "react";
 import { useProjectsContext } from "../hooks/useProjectsContext";
+import { currencyFormatter } from "../utils/currencyFormatter";
 import moment from "moment";
 import ProjectForm from "../components/ProjectFrom";
 
@@ -11,12 +11,10 @@ const ProjectDetails = ({ project }) => {
   const { dispatch } = useProjectsContext();
 
   const handleDelete = async () => {
-    const res = await fetch(
-      `http://localhost:4000/api/projects/${project._id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const res = await fetch(`${process.env.REACT_APP_API_URL}${project._id}`, {
+      method: "DELETE",
+    });
+
     const json = await res.json();
 
     if (res.ok) {
@@ -79,6 +77,7 @@ const ProjectDetails = ({ project }) => {
         </button>
       </div>
 
+      {/* OVERLAY */}
       <div
         onClick={handleOverlay}
         className={`overlay fixed z-[1] h-screen w-screen bg-slate-900/50 backdrop-blur-sm top-0 left-0 right-0 bottom-0 ${
@@ -86,6 +85,7 @@ const ProjectDetails = ({ project }) => {
         }`}
       ></div>
 
+      {/* MODAL */}
       <div
         className={`update-modal w-[35rem] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-800 p-10 shadow-xl rounded-xl border border-slate-700 z-[2] ${
           isModalOpen ? "" : "hidden"
@@ -105,4 +105,4 @@ const ProjectDetails = ({ project }) => {
   );
 };
 
-export default ProjectDetails;
+export default React.memo(ProjectDetails);
