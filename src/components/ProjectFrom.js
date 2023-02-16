@@ -9,6 +9,7 @@ const ProjectFrom = () => {
   const [manager, setManager] = useState("");
   const [dev, setDev] = useState("");
   const [error, setError] = useState(null);
+  const [emptyFields, setEmptyFields] = useState([]);
 
   const { dispatch } = useProjectsContext();
 
@@ -28,6 +29,7 @@ const ProjectFrom = () => {
 
     if (!res.ok) {
       setError(json.error);
+      setEmptyFields(json.emptyFields);
     }
 
     if (res.ok) {
@@ -38,8 +40,7 @@ const ProjectFrom = () => {
       setManager("");
       setDev("");
       setError(null);
-
-      console.log("New project added", json);
+      setEmptyFields([]);
       dispatch({ type: "CREATE_PROJECT", payload: json });
     }
   };
@@ -63,9 +64,14 @@ const ProjectFrom = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           id="title"
-          className="bg-transparent border border-slate-500 py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300"
+          className={`bg-transparent border ${
+            emptyFields.includes("title")
+              ? "border-rose-500"
+              : "border-slate-500"
+          } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
+
       <div className="form-control flex flex-col gap-2">
         <label
           htmlFor="tech"
@@ -79,9 +85,14 @@ const ProjectFrom = () => {
           value={tech}
           onChange={(e) => setTech(e.target.value)}
           id="tech"
-          className="bg-transparent border border-slate-500 py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300"
+          className={`bg-transparent border ${
+            emptyFields.includes("tech")
+              ? "border-rose-500"
+              : "border-slate-500"
+          } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
+
       <div className="form-control flex flex-col gap-2">
         <label
           htmlFor="budget"
@@ -95,9 +106,14 @@ const ProjectFrom = () => {
           value={budget}
           onChange={(e) => setBudget(e.target.value)}
           id="budget"
-          className="bg-transparent border border-slate-500 py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300"
+          className={`bg-transparent border ${
+            emptyFields.includes("budget")
+              ? "border-rose-500"
+              : "border-slate-500"
+          } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
+
       <div className="form-control flex flex-col gap-2">
         <label
           htmlFor="duration"
@@ -111,9 +127,14 @@ const ProjectFrom = () => {
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
           id="duration"
-          className="bg-transparent border border-slate-500 py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300"
+          className={`bg-transparent border ${
+            emptyFields.includes("duration")
+              ? "border-rose-500"
+              : "border-slate-500"
+          } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
+
       <div className="form-control flex flex-col gap-2">
         <label
           htmlFor="manager"
@@ -127,9 +148,14 @@ const ProjectFrom = () => {
           value={manager}
           onChange={(e) => setManager(e.target.value)}
           id="manager"
-          className="bg-transparent border border-slate-500 py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300"
+          className={`bg-transparent border ${
+            emptyFields.includes("manager")
+              ? "border-rose-500"
+              : "border-slate-500"
+          } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
+
       <div className="form-control flex flex-col gap-2">
         <label
           htmlFor="dev"
@@ -143,7 +169,9 @@ const ProjectFrom = () => {
           value={dev}
           onChange={(e) => setDev(e.target.value)}
           id="dev"
-          className="bg-transparent border border-slate-500 py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300"
+          className={`bg-transparent border ${
+            emptyFields.includes("dev") ? "border-rose-500" : "border-slate-500"
+          } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
 
