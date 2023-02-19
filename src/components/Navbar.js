@@ -9,6 +9,14 @@ const Navbar = () => {
       >
         Orbit Council
       </Link>
+      <nav className="flex gap-5">
+        <Link to="/login" className="hover:text-sky-400 duration-300">
+          Login
+        </Link>
+        <Link to="/signup" className="hover:text-sky-400 duration-300">
+          Signup
+        </Link>
+      </nav>
     </div>
   );
 };
