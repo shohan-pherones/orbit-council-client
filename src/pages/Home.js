@@ -1,14 +1,23 @@
 import { useEffect } from "react";
 import { useProjectsContext } from "../hooks/useProjectsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import ProjectDetails from "../components/ProjectDetails";
 import ProjectForm from "../components/ProjectFrom";
 
 const Home = () => {
   const { projects, dispatch } = useProjectsContext();
+  const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const res = await fetch(process.env.REACT_APP_BASE_URL + "/api/projects");
+      const res = await fetch(
+        process.env.REACT_APP_BASE_URL + "/api/projects",
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       const json = await res.json();
 
@@ -17,8 +26,10 @@ const Home = () => {
       }
     };
 
-    fetchProjects();
-  }, [dispatch]);
+    if (user) {
+      fetchProjects();
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="home container mx-auto py-20 grid grid-cols-3 gap-10">

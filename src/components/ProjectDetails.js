@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useProjectsContext } from "../hooks/useProjectsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { currencyFormatter } from "../utils/currencyFormatter";
 import moment from "moment";
 import ProjectForm from "../components/ProjectFrom";
@@ -9,12 +10,20 @@ const ProjectDetails = ({ project }) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
   const { dispatch } = useProjectsContext();
+  const { user } = useAuthContext();
 
   const handleDelete = async () => {
+    if (!user) {
+      return;
+    }
+
     const res = await fetch(
       `${process.env.REACT_APP_BASE_URL}/api/projects/${project._id}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       }
     );
 
