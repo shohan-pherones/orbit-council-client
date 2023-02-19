@@ -8,7 +8,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const res = await fetch(process.env.REACT_APP_API_URL);
+      const res = await fetch(process.env.REACT_APP_BASE_URL + "/api/projects");
 
       const json = await res.json();
 

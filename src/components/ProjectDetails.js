@@ -11,9 +11,12 @@ const ProjectDetails = ({ project }) => {
   const { dispatch } = useProjectsContext();
 
   const handleDelete = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}${project._id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/projects/${project._id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     const json = await res.json();
 

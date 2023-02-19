@@ -21,13 +21,16 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
 
     // if there is no project, sending post request
     if (!project) {
-      const res = await fetch(process.env.REACT_APP_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(projectObj),
-      });
+      const res = await fetch(
+        process.env.REACT_APP_BASE_URL + "/api/projects",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(projectObj),
+        }
+      );
 
       const json = await res.json();
 
@@ -56,7 +59,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
     // if there is a project, sending patch request
     if (project) {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}${project._id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/projects/${project._id}`,
         {
           method: "PATCH",
           headers: {
