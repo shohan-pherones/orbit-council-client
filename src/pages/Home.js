@@ -32,7 +32,7 @@ const Home = () => {
   }, [dispatch, user]);
 
   return (
-    <div className="home container mx-auto py-20 grid md:grid-cols-3 gap-10">
+    <div className="home container mx-auto py-20 grid md:grid-cols-3 gap-10 w-full">
       <div className="md:col-span-2">
         <h2 className="section-title text-4xl text-sky-400 font-semibold mb-10">
           {projects.length < 1 ? "No Projects" : "All Projects"}
@@ -46,7 +46,9 @@ const Home = () => {
         </div>
       </div>
 
-      <ProjectForm />
+      <div className="w-full">
+        <ProjectForm />
+      </div>
     </div>
   );
 };

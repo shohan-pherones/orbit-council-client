@@ -48,7 +48,7 @@ const ProjectDetails = ({ project }) => {
     <div className="project bg-slate-800 p-5 rounded-xl shadow-xl border border-slate-700 flex flex-col gap-5 w-full md:w-[30rem] hover:bg-slate-900 duration-300">
       <div className="project-top">
         <span className="text-sky-400">ID: {project._id}</span>
-        <h3 className="text-3xl font-medium truncate">{project.title}</h3>
+        <h3 className="text-3xl font-medium md:truncate">{project.title}</h3>
         <span className="uppercase text-xs tracking-widest font-medium text-slate-500">
           {project.tech}
         </span>

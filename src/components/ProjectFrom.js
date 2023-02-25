@@ -101,7 +101,10 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
   };
 
   return (
-    <form className="project-form flex flex-col gap-5" onSubmit={handleSubmit}>
+    <form
+      className="project-form flex flex-col gap-5 w-full"
+      onSubmit={handleSubmit}
+    >
       <h2
         className={`section-title text-4xl text-sky-400 font-semibold mb-5 ${
           project ? "hidden" : ""
