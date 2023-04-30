@@ -127,7 +127,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           onChange={(e) => setTitle(e.target.value)}
           id="title"
           className={`bg-transparent border ${
-            emptyFields.includes("title")
+            emptyFields?.includes("title")
               ? "border-rose-500"
               : "border-slate-500"
           } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
@@ -148,7 +148,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           onChange={(e) => setTech(e.target.value)}
           id="tech"
           className={`bg-transparent border ${
-            emptyFields.includes("tech")
+            emptyFields?.includes("tech")
               ? "border-rose-500"
               : "border-slate-500"
           } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
@@ -169,7 +169,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           onChange={(e) => setBudget(e.target.value)}
           id="budget"
           className={`bg-transparent border ${
-            emptyFields.includes("budget")
+            emptyFields?.includes("budget")
               ? "border-rose-500"
               : "border-slate-500"
           } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
@@ -190,7 +190,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           onChange={(e) => setDuration(e.target.value)}
           id="duration"
           className={`bg-transparent border ${
-            emptyFields.includes("duration")
+            emptyFields?.includes("duration")
               ? "border-rose-500"
               : "border-slate-500"
           } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
@@ -211,7 +211,7 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           onChange={(e) => setManager(e.target.value)}
           id="manager"
           className={`bg-transparent border ${
-            emptyFields.includes("manager")
+            emptyFields?.includes("manager")
               ? "border-rose-500"
               : "border-slate-500"
           } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
@@ -232,7 +232,9 @@ const ProjectFrom = ({ project, setIsModalOpen, setIsOverlayOpen }) => {
           onChange={(e) => setDev(e.target.value)}
           id="dev"
           className={`bg-transparent border ${
-            emptyFields.includes("dev") ? "border-rose-500" : "border-slate-500"
+            emptyFields?.includes("dev")
+              ? "border-rose-500"
+              : "border-slate-500"
           } py-3 px-5 rounded-lg outline-none focus:border-sky-400 duration-300`}
         />
       </div>
